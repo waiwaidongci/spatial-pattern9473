@@ -1,0 +1,9 @@
+export interface User{id:number;name:string;email:string;role:'admin'|'analyst'|'viewer'}
+export interface Survey{id:number;code:string;name:string;period:string;description:string;source:string;cell_size_m:number;cell_count:number;edge_count:number;supported:boolean;reason:string}
+export interface Cell{id:number;survey_id:number;code:string;row:number;col:number;value:number;note:string}
+export interface Edge{id:number;survey_id:number;a:string;b:string}
+export interface Local{cell:Cell;I:number;expected:number;p:number;q:number;evidence:boolean;z:number;lag:number;degree:number;quadrant:string;null:number[];extreme:number;spawn_key:number[]}
+export interface Result{algorithm_version:string;survey:Survey;graph:{n:number;edges:number;S0:number;min_degree:number;max_degree:number;weight_rule:string};centering:{mean:number;value_scale:number};global:{I:number;expected:number;p:number;null:number[];extreme:number;tail:string};local:Local[];permutations:number;seed:number;resolution:number;evidence_count:number;input_hash:string;input_snapshot:{edges:Pick<Edge,'a'|'b'>[]};assumptions:string;bh_note:string}
+export interface Run{id:number;name:string;survey_id:number;permutations:number;seed:number;status:'queued'|'running'|'completed'|'failed';result:Result;error:string;owner:string;created_at:string}
+export interface Note{id:number;run_id:number;title:string;interpretation:string;proposal:string;status:'submitted'|'approved'|'rejected';owner:string;reviewer:string;review_note:string;created_at:string}
+export interface Audit{id:number;actor:string;action:string;target:string;created_at:string}

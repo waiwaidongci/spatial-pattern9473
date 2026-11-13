@@ -1,0 +1,1 @@
+export const Roles={admin:'测绘负责人',analyst:'空间研究员',viewer:'补测阅读者'} as const;export const RunStatus={queued:'等待置换',running:'计算中',completed:'已完成',failed:'失败'} as const;export const ReviewStatus={submitted:'待审阅',approved:'已批准',rejected:'退回补测'} as const;

@@ -1,0 +1,1 @@
+import {request} from './client';import {Cell} from '../types/domain';export const getCells=(id:number)=>request<Cell[]>(`/surveys/${id}/cells`);export const annotateCell=(id:number,note:string)=>request<Cell>(`/cells/${id}`,{method:'PATCH',body:JSON.stringify({note})});

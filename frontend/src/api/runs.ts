@@ -1,0 +1,1 @@
+import {request} from './client';import {Run} from '../types/domain';export const getRuns=()=>request<Run[]>('/runs');export const createRun=(data:{name:string;survey_id:number;permutations:number;seed:number})=>request<Run>('/runs',{method:'POST',body:JSON.stringify(data)});
