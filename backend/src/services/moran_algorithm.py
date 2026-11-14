@@ -14,11 +14,13 @@ def two_sided_p(observed,null,center):
     extreme=int(np.sum(np.abs(null-center)>=abs(observed-center)-tol))
     return (extreme+1)/(len(null)+1),extreme,tol
 
-def global_permutations(z,W,B,rng):
+def global_permutations(z,W,B,rng,keep_null=True):
     observed=global_statistic(z,W);center=-1/(len(z)-1);null=[global_statistic(rng.permutation(z),W) for _ in range(B)];p,k,tol=two_sided_p(observed,null,center)
-    return {"I":observed,"expected":center,"p":p,"extreme":k,"null":null,"tie_tolerance":tol,"tail":"双侧，比较|I−E[I]|，E[I]=−1/(n−1)，+1 Monte Carlo校正"}
+    out={"I":observed,"expected":center,"p":p,"extreme":k,"tie_tolerance":tol,"tail":"双侧，比较|I−E[I]|，E[I]=−1/(n−1)，+1 Monte Carlo校正","null_included":keep_null}
+    if keep_null:out["null"]=null
+    return out
 
-def local_permutations(z,W,B,streams):
+def local_permutations(z,W,B,streams,keep_null=True):
     n=len(z);m2=float(z@z/n);observed=local_statistics(z,W);expected=conditional_expectations(z);lag=W@z;out=[]
     for i in range(n):
         others=np.delete(z,i);degree=int(np.count_nonzero(W[i]));rng=np.random.default_rng(streams[i])
@@ -26,7 +28,9 @@ def local_permutations(z,W,B,streams):
         null=[float(z[i]*np.mean(rng.choice(others,size=degree,replace=False))/m2) for _ in range(B)]
         p,k,tol=two_sided_p(float(observed[i]),null,float(expected[i]));a,b=float(z[i]/np.sqrt(m2)),float(lag[i]/np.sqrt(m2))
         quadrant='HH' if a>0 and b>0 else 'LL' if a<0 and b<0 else 'HL' if a>0 and b<0 else 'LH' if a<0 and b>0 else 'AXIS'
-        out.append({"I":float(observed[i]),"expected":float(expected[i]),"p":p,"extreme":k,"null":null,"tie_tolerance":tol,"z":a,"lag":b,"degree":degree,"quadrant":quadrant,"spawn_key":list(streams[i].spawn_key)})
+        item={"I":float(observed[i]),"expected":float(expected[i]),"p":p,"extreme":k,"tie_tolerance":tol,"z":a,"lag":b,"degree":degree,"quadrant":quadrant,"spawn_key":list(streams[i].spawn_key),"null_included":keep_null}
+        if keep_null:item["null"]=null
+        out.append(item)
     return out
 
 

@@ -1,0 +1,6 @@
+VERSION="row-moran-conditional-bh-v2"
+SENSITIVITY_SCOPE="对指定格逐个剔除；每个方案在剩余格上重建邻接并按剩余行邻居数重新标准化，重算全局标签置换、剩余格条件置换及剩余全体格BH校正。无效方案单列原因，不中断其他方案。"
+SENSITIVITY_STREAM="建单根种子按格code稳定派生：基础方案沿用原v1布局（根种子前n+1个子流）；每个剔除方案以根种子与剔除格code的SHA256摘要构成独立SeedSequence，再派生n+1个子流。方案随机流只取决于根种子与格code，增删其他方案或方案无效均不改变已有方案的抽样。"
+SENSITIVITY_NULL_NOTE="基础方案保留全部全局/局部置换零分布；敏感性方案只保留p、极端计数、期望与子流结构，避免按方案数成倍放大产物体积。"
+SENSITIVITY_DROP_NOTE="剔除格从剩余格检验和共同格比较中排除，不计为失去证据；得失只统计基础方案与方案共同存在的格。"
+SENSITIVITY_UPGRADE_NOTE="旧版结果仅补充敏感性块；基础全局/局部结果、原input_hash与原算法版本保持不变，原页面展示兼容。"
